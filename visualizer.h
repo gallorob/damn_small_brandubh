@@ -4,11 +4,13 @@
 #include "constants.h"
 #include "bit_operator.h"
 
+/// <summary>Visualize the current game state</summary>
+/// <param name="game">The current game</param>
 void visualize_game(const char *game)
 {
 	// Tell who's playing
 	printf("Current player is ");
-	if ((game[ARR_LEN - 1] & PLAYER_MASK) == PLAYER_MASK)
+	if ((game[ARR_LEN - 1] & PLAYER) == PLAYER)
 	{
 		printf("ATTACKER");
 	}
@@ -20,41 +22,33 @@ void visualize_game(const char *game)
 
 	// Get the board representation
 	printf("Current board:\n  A  B  C  D  E  F  G");
-	int char_idx = 0;
-	int bit_idx = 0;
 	for (int i = 0; i < BOARD_SIZE; i++)
 	{
 		printf("\n%d", i + 1);
 		for (int j = 0; j < BOARD_SIZE; j++)
 		{
-			tile tile = get_tile(game, &char_idx, &bit_idx);
-			if (tile.piece)
+			tile tile = board_at(game, &i, &j);
+			switch (tile.data)
 			{
-				if (tile.colour)
-				{
-					if (tile.king)
-					{
-						printf(" K ");
-					}
-					else
-					{
-						printf(" D ");
-					}
-				}
-				else
-				{
-					printf(" A ");
-				}
-			}
-			else
-			{
+			case T_DEF:
+				printf(" D ");
+				break;
+			case T_KING:
+				printf(" K ");
+				break;
+			case T_ATK:
+				printf(" A ");
+				break;
+			case T_EMPTY:
 				printf(" . ");
+				break;
+			default:
+				break;
 			}
 		}
 	}
 	printf("\n");
 }
-
 
 
 #endif

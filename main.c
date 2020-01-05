@@ -3,18 +3,21 @@
 #include "constants.h"
 #include "visualizer.h"
 
+// The game state
+unsigned char game[ARR_LEN] = { '\0' };
 
-// 152 usable bits, divided in:
-// bits 151 to 4:   board (3x7x7 bits necessary)
-// bit 3:           current player
-// bits 2 to 0:     extra
-unsigned char board[ARR_LEN] = { '\0' };
 
 int main() {
-    board[ARR_LEN - 1] = 0x8;
-    board[0] |= 0xF3;
-    visualize_game(board);
-    printf("\nDeclared size of game: %d bytes.\n", (int)sizeof(board));
+    // setup the game
+    setup_default_brandubh_board(game);
+    game[ARR_LEN - 1] |= PLAYER;
+    // visualize the game state
+    visualize_game(game);
+    // admire how little memory it takes
+    printf("\Size of game state: %d bytes.\n", (int)sizeof(game));
 
+    // todo: add everything else
+
+    // for now, exit
     return 0;
 }
