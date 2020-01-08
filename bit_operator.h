@@ -1,7 +1,6 @@
 #ifndef BIT_OPERATOR
 #define BIT_OPERATOR
 
-#include <climits>
 #include "constants.h"
 
 /// <summary>Get the tile value</summary>
@@ -11,7 +10,7 @@
 /// <returns>The tile value</returns>
 unsigned int tile_value(const char a, unsigned int i, unsigned int offset)
 {
-	return (a >> (CHAR_BIT - (i + offset))) & (0x1 + offset);
+	return (a >> (game_variables.char_bit - (i + offset))) & (0x1 + offset);
 }
 
 /// <summary>Get the tile at the specified (pair of) bit(s) of the character</summary>
@@ -21,7 +20,7 @@ unsigned int tile_value(const char a, unsigned int i, unsigned int offset)
 /// <returns>A tile</returns> 
 tile get_tile(const char *board, int* char_idx, int* bit_idx)
 {
-	if (DEBUG)
+	if (game_variables.debug)
 	{
 		printf("Called get_tile with Char-idx: %u Bit-idx: %u\tRead: %u\n", *char_idx, *bit_idx, tile_value(board[*char_idx], *bit_idx, 0x0));
 	}
@@ -35,10 +34,10 @@ tile get_tile(const char *board, int* char_idx, int* bit_idx)
 /// <returns>The tile</returns> 
 tile board_at(const char* board, int* x, int* y)
 {
-	unsigned int value = (*x * BOARD_SIZE) + *y;
-	unsigned int char_idx = (value * 2) / CHAR_BIT;
-	unsigned int bit_idx = (value * 2) % CHAR_BIT;
-	if (DEBUG)
+	unsigned int value = (*x * game_variables.board_size) + *y;
+	unsigned int char_idx = (value * 2) / game_variables.char_bit;
+	unsigned int bit_idx = (value * 2) % game_variables.char_bit;
+	if (game_variables.debug)
 	{
 		printf("Called get_tile_by_pos with X: %u Y: %u\tComputed Value: %2u Char-idx: %u Bit-idx: %u\tRead: %u\n", *x, *y, value, char_idx, bit_idx, get_tile(board, &char_idx, &bit_idx).data);
 	}

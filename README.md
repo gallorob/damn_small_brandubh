@@ -15,6 +15,8 @@ Current board:
 5 .  .  .  D  .  .  .
 6 .  .  .  A  .  .  .
 7 .  .  .  A  .  .  .
+
 Size of game state: 13 bytes.
+Size of constants: 4 bytes.
 ```
 and I'm damn proud of that.

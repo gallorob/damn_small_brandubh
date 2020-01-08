@@ -1,25 +1,37 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-#include <climits>
-
-// board infos
-#define BOARD_SIZE 0x7	// board dimension (n x n)
-#define ARR_LEN (int)(BOARD_SIZE * BOARD_SIZE * 0x2 / CHAR_BIT) + 1	// = 13 bytes, 104 bits (98 used for board, 6 extra)
 // tile types
 #define T_EMPTY 0x0	// Empty tile:		00
 #define T_ATK 0x1	// Attacker tile:	01
 #define T_DEF 0x2	// Defender tile:	10
 #define T_KING 0x3	// King tile:		11
-// extra info
-#define PLAYER 0x20	// current player:	0010 0000
-#define DEBUG 0x0
+// (BOARD_SIZE * BOARD_SIZE * 0x2 / CHAR_BIT) + 1 = 13 bytes, 104 bits (98 used for board, 6 extra)
+#define ARR_LEN 13
+
+typedef struct {
+	// type bit dimensions
+	unsigned int char_bit : 4;
+	// board dimension (n x n)
+	unsigned int board_size : 3;
+	// current player:	last char: 0010 0000
+	unsigned int player : 2;
+	unsigned int debug : 1;
+} variables;
+
+variables game_variables = {\
+	.char_bit = 0x8, \
+	.board_size = 0x7, \
+	.player = 0x3, \
+	.debug = 0x0  \
+};
 
 // use a struct with a bitfield of 2 bits since we know all possible values are in [0,3]
 // note: sizeof(tile) = 4 (bytes) but it should only use 2 (go figure)
 typedef struct tile {
 	unsigned int data : 2;
 } tile;
+
 
 /// <summary>Set up the default Brandubh board</summary>
 /// <param name="board">The board</param>

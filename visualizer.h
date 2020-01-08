@@ -10,7 +10,7 @@ void visualize_game(const char *game)
 {
 	// Tell who's playing
 	printf("Current player is ");
-	if ((game[ARR_LEN - 1] & PLAYER) == PLAYER)
+	if (tile_value(game[game_variables.arr_len - 1], game_variables.player, 0x0) == 1)
 	{
 		printf("ATTACKER");
 	}
@@ -22,10 +22,10 @@ void visualize_game(const char *game)
 
 	// Get the board representation
 	printf("Current board:\n  A  B  C  D  E  F  G");
-	for (int i = 0; i < BOARD_SIZE; i++)
+	for (int i = 0; i < game_variables.board_size; i++)
 	{
 		printf("\n%d", i + 1);
-		for (int j = 0; j < BOARD_SIZE; j++)
+		for (int j = 0; j < game_variables.board_size; j++)
 		{
 			tile tile = board_at(game, &i, &j);
 			switch (tile.data)
