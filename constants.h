@@ -48,7 +48,7 @@ void setup_default_brandubh_board(char *board)
 	. . . .		0000 0000	0x0
 	. D . .		0010 0000	0x20
 	. A A D		0001 0110	0x16
-	K D D A		1110 1001	0xE9
+	K D A A		1110 0101	0xE5
 	. . . D		0000 0010	0x2
 	. . . .		0000 0000	0x0
 	. . A .		0000 0100	0x4
@@ -56,7 +56,7 @@ void setup_default_brandubh_board(char *board)
 	. A . .		0001 0000	0x10
 	.			00			0x0
 	*/
-	unsigned int tiles[13] = { 0x1, 0x0, 0x4, 0x0, 0x20, 0x16, 0xE9, 0x2, 0x0, 0x4, 0x0, 0x10, 0x0 };
+	unsigned int tiles[13] = { 0x1, 0x0, 0x4, 0x0, 0x20, 0x16, 0xE5, 0x2, 0x0, 0x4, 0x0, 0x10, 0x0 };
 	// this is a lazy approach; a more efficient one would be to initialize the game with this board already
 	// todo: make the change once everything else works
 	for (int i = 0; i < 13; i++)
