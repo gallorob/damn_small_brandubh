@@ -4,6 +4,7 @@
 #include "visualizer.h"
 
 #include "bit_operator.h"
+#include "move.h"
 
 // The game state
 unsigned char game[ARR_LEN] = { '\0' };

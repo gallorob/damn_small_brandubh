@@ -27,7 +27,7 @@ void visualize_game(const char *game)
 		printf("\n%d", i + 1);
 		for (unsigned int j = 0; j < game_variables.board_size; j++)
 		{
-			tile tile = board_at(game, &i, &j);
+			tile tile = get_board_at(game, &i, &j);
 			switch (tile.data)
 			{
 			case T_DEF:
