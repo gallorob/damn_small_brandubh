@@ -17,13 +17,17 @@ typedef struct {
 	// current player:	last char: 0010 0000
 	unsigned int player : 2;
 	unsigned int debug : 1;
+
+	unsigned int full_byte : 8;
 } variables;
 
-variables game_variables = {\
+variables game_variables = { \
 	.char_bit = 0x8, \
 	.board_size = 0x7, \
 	.player = 0x3, \
-	.debug = 0x0  \
+	.debug = 0x0,  \
+
+	.full_byte = 0xff
 };
 
 // use a struct with a bitfield of 2 bits since we know all possible values are in [0,3]
