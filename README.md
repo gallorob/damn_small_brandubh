@@ -18,9 +18,8 @@ Current board:
 
 Size of game state: 13 bytes.
 Size of constants: 4 bytes.
-
-Move attacker from F4 to F7:
-Current player is ATTACKER.
+Enter your move: f4-f7
+Current player is DEFENDER.
 Current board:
   A  B  C  D  E  F  G
 1 .  .  .  A  .  .  .

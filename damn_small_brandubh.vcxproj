@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClInclude Include="bit_operator.h" />
     <ClInclude Include="constants.h" />
+    <ClInclude Include="core.h" />
     <ClInclude Include="move.h" />
     <ClInclude Include="visualizer.h" />
   </ItemGroup>

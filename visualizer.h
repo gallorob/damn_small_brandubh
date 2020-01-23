@@ -10,7 +10,7 @@ void visualize_game(const char *game)
 {
 	// Tell who's playing
 	printf("Current player is ");
-	if (tile_value(game[ARR_LEN - 1], game_variables.player, 0x0) == 1)
+	if (current_player(game) == 1)
 	{
 		printf("ATTACKER");
 	}
@@ -27,8 +27,8 @@ void visualize_game(const char *game)
 		printf("\n%d", i + 1);
 		for (unsigned int j = 0; j < game_variables.board_size; j++)
 		{
-			tile tile = get_board_at(game, &i, &j);
-			switch (tile.data)
+			unsigned int tile = get_board_at(game, &i, &j);
+			switch (tile)
 			{
 			case T_DEF:
 				printf(" D ");

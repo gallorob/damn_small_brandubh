@@ -8,6 +8,7 @@
 #define T_KING 0x3	// King tile:		11
 // (BOARD_SIZE * BOARD_SIZE * 0x2 / CHAR_BIT) + 1 = 13 bytes, 104 bits (98 used for board, 6 extra)
 #define ARR_LEN 13
+#define MOVE_LEN 5
 
 typedef struct {
 	// type bit dimensions
@@ -17,7 +18,6 @@ typedef struct {
 	// current player:	last char: 0010 0000
 	unsigned int player : 2;
 	unsigned int debug : 1;
-
 	unsigned int full_byte : 8;
 } variables;
 
@@ -26,16 +26,8 @@ variables game_variables = { \
 	.board_size = 0x7, \
 	.player = 0x3, \
 	.debug = 0x0,  \
-
 	.full_byte = 0xff
 };
-
-// use a struct with a bitfield of 2 bits since we know all possible values are in [0,3]
-// note: sizeof(tile) = 4 (bytes) but it should only use 2 (go figure)
-typedef struct tile {
-	unsigned int data : 2;
-} tile;
-
 
 /// <summary>Set up the default Brandubh board</summary>
 /// <param name="board">The board</param>
