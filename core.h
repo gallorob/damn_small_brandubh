@@ -4,7 +4,7 @@
 #include "move.h"
 #include "bit_operator.h"
 
-void play_move(char* game)
+void play_move(unsigned char* game)
 {
 	// read move
 	const char* move = read_and_validate_move();

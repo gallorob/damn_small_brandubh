@@ -13,7 +13,7 @@ unsigned int tile_value(const char a, unsigned int i, unsigned int offset)
 	return (a >> (game_variables.char_bit - (i + offset))) & (0x1 + offset);
 }
 
-unsigned int current_player(const char* game)
+unsigned int current_player(const unsigned char* game)
 {
 	return tile_value(game[ARR_LEN - 1], game_variables.player, 0x0);
 }
@@ -21,7 +21,7 @@ unsigned int current_player(const char* game)
 /// <summary>Flip a single bit in a char</summary>
 /// <param name="a">The byte</param> 
 /// <param name="pos">The bit position</param> 
-void flip_bit(char* a, unsigned int* pos)
+void flip_bit(unsigned char* a, unsigned int* pos)
 {
 	*a ^= (1 << *pos);
 }
@@ -31,7 +31,7 @@ void flip_bit(char* a, unsigned int* pos)
 /// <param name="char_idx">The character index of the board</param> 
 /// <param name="bit_idx">The bit index of the character</param> 
 /// <returns>A tile</returns> 
-unsigned int get_tile(const char *board, int* char_idx, int* bit_idx)
+unsigned int get_tile(const unsigned char *board, unsigned int* char_idx, const unsigned int* bit_idx)
 {
 	if (game_variables.debug)
 	{
@@ -49,7 +49,7 @@ unsigned int get_tile(const char *board, int* char_idx, int* bit_idx)
 /// <param name="char_byte">The byte</param> 
 /// <param name="tile_value">The new tile value</param> 
 /// <param name="b_offset">Position in the byte (\in[1, 4])</param>
-void set_tile(unsigned char* char_byte, unsigned int* tile_value, unsigned int* b_offset)
+void set_tile(unsigned char* char_byte, const unsigned int* tile_value, const unsigned int* b_offset)
 {
 	if (game_variables.debug)
 	{
@@ -70,11 +70,11 @@ void set_tile(unsigned char* char_byte, unsigned int* tile_value, unsigned int* 
 /// <param name="y">The row (\in[0, BOARD_SIZE - 1])</param> 
 /// <param name="x">The column (\in[0, BOARD_SIZE - 1])</param> 
 /// <returns>The tile</returns> 
-unsigned int get_board_at(const char* board, int* y, int* x)
+unsigned int get_board_at(const unsigned char* board, unsigned int* y, unsigned int* x)
 {
 	unsigned int value = (*y * game_variables.board_size) + *x;
 	unsigned int char_idx = (value * 2) / game_variables.char_bit;
-	unsigned int bit_idx = (value * 2) % game_variables.char_bit;
+	const unsigned int bit_idx = (value * 2) % game_variables.char_bit;
 	if (game_variables.debug)
 	{
 		printf("Called get_tile_by_pos with X: 0x%x Y: 0x%x\n\tComputed Value: 0x%x Char-idx: 0x%x Bit-idx: 0x%x\n", *x, *y, value, char_idx, bit_idx);
@@ -93,7 +93,7 @@ unsigned int get_board_at(const char* board, int* y, int* x)
 /// <param name="y">The row (\in[0, BOARD_SIZE - 1])</param> 
 /// <param name="x">The column (\in[0, BOARD_SIZE - 1])</param> 
 /// <returns>The tile</returns> 
-void set_board_at(unsigned char* board, unsigned int* new_tile, int* y, int* x)
+void set_board_at(unsigned char* board, const unsigned int* new_tile, const unsigned int* y, const unsigned int* x)
 {
 	unsigned int value = (*y * game_variables.board_size) + *x;
 	unsigned int char_idx = (value * 2) / game_variables.char_bit;

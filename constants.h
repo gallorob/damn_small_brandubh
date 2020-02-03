@@ -31,7 +31,7 @@ variables game_variables = { \
 
 /// <summary>Set up the default Brandubh board</summary>
 /// <param name="board">The board</param>
-void setup_default_brandubh_board(char *board)
+void setup_default_brandubh_board(unsigned char *board)
 {
 	/*
 	. . . A		0000 0001	0x1

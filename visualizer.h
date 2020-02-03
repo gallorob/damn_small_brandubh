@@ -6,11 +6,11 @@
 
 /// <summary>Visualize the current game state</summary>
 /// <param name="game">The current game</param>
-void visualize_game(const char *game)
+void visualize_game(const unsigned char *game)
 {
 	// Tell who's playing
 	printf("Current player is ");
-	if (current_player(game) == 1)
+	if (current_player(game) == (unsigned int) 1)
 	{
 		printf("ATTACKER");
 	}
