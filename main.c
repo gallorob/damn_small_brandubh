@@ -20,9 +20,11 @@ int main() {
     printf("\nSize of game state: %d bytes.\n", (int)sizeof(game));
     printf("Size of constants: %d bytes.\n", (int)sizeof(game_variables));
     
-    play_move(game);
-    
-    visualize_game(game);
+    while (1)
+    {
+        play_move(game);
+        visualize_game(game);
+    }
 
     // todo: add everything else
 

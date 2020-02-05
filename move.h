@@ -66,7 +66,6 @@ const char* read_and_validate_move()
 	int x = -1;
 	while (x < 0)
 	{
-		printf("Enter your move: ");
 		fgets(input, MOVE_LEN + 1, stdin);
 		remove_capital(input);
 		x = validate_move(input);
