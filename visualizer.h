@@ -4,6 +4,8 @@
 #include "constants.h"
 #include "bit_operator.h"
 
+#include "core.h"
+
 /// <summary>Visualize the current game state</summary>
 /// <param name="game">The current game</param>
 void visualize_game(const unsigned char *game)
@@ -40,7 +42,14 @@ void visualize_game(const unsigned char *game)
 				printf(" A ");
 				break;
 			case T_EMPTY:
-				printf(" . ");
+				if (is_corner(&i, &j) || is_throne(&i, &j))
+				{
+					printf(" x ");
+				}
+				else
+				{
+					printf(" . ");
+				}
 				break;
 			default:
 				break;

@@ -14,6 +14,22 @@ void update_player(unsigned char* game)
 	flip_bit(&(game[ARR_LEN - 1]), &player_pos);
 }
 
+unsigned int is_throne(unsigned int* x, unsigned int* y)
+{
+	return (*x == 3 && *y == 3);
+}
+
+unsigned int is_corner(unsigned int* x, unsigned int* y)
+{
+	return ((*x == 0 && *y == 0)
+		||
+		(*x == 0 && *y == 6)
+		||
+		(*x == 6 && *y == 0)
+		||
+		(*x == 6 && *y == 6));
+}
+
 /// <summary>Get the adjacent piece to the given position in the desired direction</summary>
 /// <param name="game">The game</param>
 /// <param name="x">The x position</param>
@@ -33,15 +49,61 @@ unsigned int get_adjacent_piece(unsigned char* game, const unsigned int* x, cons
 	return adj_piece;
 }
 
-unsigned int does_capture(unsigned char* game, const unsigned int* x, const unsigned int* y, unsigned int dx, unsigned int dy, unsigned int piece_type, unsigned int opp_piece)
+unsigned int is_adjacent_piece_hostile(unsigned char* game, const unsigned int* moving_piece, const unsigned int* x, const unsigned int* y, unsigned int* dx, unsigned int* dy)
 {
-	unsigned int adj_piece = get_adjacent_piece(game, x, y, &dx, &dy);
-	if (adj_piece == opp_piece)
+	unsigned int x1 = *x + *dx;
+	unsigned int y1 = *y + *dy;
+	unsigned int is_hostile = 0;
+	if (x1 <= game_variables.board_size && x1 >= 0 && y1 <= game_variables.board_size && y1 >= 0)
 	{
+		unsigned int adj_piece = get_board_at(game, &y1, &x1);
+		switch (*moving_piece)
+		{
+		case T_ATK:
+			if (adj_piece == (unsigned int)T_DEF)
+			{
+				is_hostile = 1;
+			}
+			else if (is_corner(&x1, &y1) || is_throne(&x1, &y1))
+			{
+				is_hostile = 1;
+			}
+			break;
+		case T_DEF:
+			if (adj_piece == (unsigned int)T_ATK)
+			{
+				is_hostile = 1;
+			}
+			else if (is_corner(&x1, &y1) || is_throne(&x1, &y1))
+			{
+				is_hostile = 1;
+			}
+			break;
+		case T_KING:
+			if (adj_piece == (unsigned int)T_ATK)
+			{
+				is_hostile = 1;
+			}
+			else if (is_corner(&x1, &y1) || is_throne(&x1, &y1))
+			{
+				is_hostile = 1;
+			}
+			break;
+		default:
+			break;
+		}
+	}
+	return is_hostile;
+}
+
+unsigned int does_capture(unsigned char* game, const unsigned int* moving_piece, const unsigned int* x, const unsigned int* y, unsigned int dx, unsigned int dy, unsigned int piece_type, unsigned int opp_piece)
+{
+	if (is_adjacent_piece_hostile(game, moving_piece, x, y, &dx, &dy))
+	{
+		unsigned int adj_piece = get_adjacent_piece(game, x, y, &dx, &dy);
 		unsigned int next_x = *x + dx;
 		unsigned int next_y = *y + dy;
-		unsigned int next_p = get_adjacent_piece(game, &next_x, &next_y, &dx, &dy);
-		return (next_p == piece_type);
+		return is_adjacent_piece_hostile(game, &adj_piece, &next_x, &next_y, &dx, &dy);
 	}
 	return 0;
 }
@@ -58,32 +120,30 @@ void apply_captures(unsigned char* game, unsigned int* moved_piece, unsigned int
 		return;
 	}
 	const unsigned int p_empty = T_EMPTY;
+	int offsets[4][2] = { {0, -1}, {1, 0}, {-1, 0}, {0, 1} };
 	switch (*moved_piece)
 	{
 	case T_ATK:
-		// check above
-		if (does_capture(game, x, y, 0, -1, T_ATK, T_DEF))
+		// check for attackers
+		for (int i = 0; i < 3; i++)
 		{
-			unsigned int y1 = *y - 1;
-			set_board_at(game, &p_empty, &y1, x);
+			if (does_capture(game, moved_piece, x, y, offsets[i][0], offsets[i][1], T_ATK, T_DEF))
+			{
+				unsigned int x1 = *x + offsets[i][0];
+				unsigned int y1 = *y + offsets[i][1];
+				set_board_at(game, &p_empty, &y1, &x1);
+			}
 		}
-		// check right
-		if (does_capture(game, x, y, +1, 0, T_ATK, T_DEF))
+	case T_DEF:
+		// check for defenders
+		for (int i = 0; i < 3; i++)
 		{
-			unsigned int x1 = *x + 1;
-			set_board_at(game, &p_empty, y, &x1);
-		}
-		// check left
-		if (does_capture(game, x, y, -1, 0, T_ATK, T_DEF))
-		{
-			unsigned int x1 = *x - 1;
-			set_board_at(game, &p_empty, y, &x1);
-		}
-		// check below
-		if (does_capture(game, x, y, 0, +1, T_ATK, T_DEF))
-		{
-			unsigned int y1 = *y + 1;
-			set_board_at(game, &p_empty, &y1, x);
+			if (does_capture(game, moved_piece, x, y, offsets[i][0], offsets[i][1], T_DEF, T_ATK))
+			{
+				unsigned int x1 = *x + offsets[i][0];
+				unsigned int y1 = *y + offsets[i][1];
+				set_board_at(game, &p_empty, &y1, &x1);
+			}
 		}
 		break;
 	
